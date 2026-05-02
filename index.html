@@ -3,699 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Design Portfolio | Detective Edition</title>
+    <title>Design Portfolio | Detective Mode</title>
     
-    <!-- Fonts - Modern & Cinematic Typography -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- لخطوط العناوين الكلاسيكية والفقرات وقصاصات الورق -->
-    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Special+Elite&family=La+Belle+Aurore&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+    <!-- الخطوط -->
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
 
     <style>
-        /* -----------------------------------------------------------
-           1. CSS Variables & Reset - الهوية البصرية والألوان
-        ----------------------------------------------------------- */
         :root {
-            --bg-paper: #e6e1d6; /* لون الورق القديم الأساسي */
-            --grid-color: rgba(180, 180, 180, 0.3); /* لون شبكة المربعات */
-            --primary-ink: #333; /* لون الحبر الأسود/البني */
-            --accent-red: #d9534f; /* لون الخيط الأحمر والختم */
-            --polaroid-bg: #fff;
-            --font-heading: 'IM Fell English SC', serif; /* عناوين مثل الصورة */
-            --font-body: 'Cairo', sans-serif; /* للجسم العربي */
-            --font-typewriter: 'Special Elite', monospace; /* للآلة الكاتبة */
-            --font-handwritten: 'La Belle Aurore', cursive; /* لخط اليد */
-            --ease-cinematic: cubic-bezier(0.23, 1, 0.32, 1);
+            --bg-paper: #e6e1d6;
+            --primary-ink: #333;
+            --accent-red: #d9534f;
+            --font-main: 'Cairo', sans-serif;
+            --font-type: 'Special Elite', monospace;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
-            font-family: var(--font-body);
+            font-family: var(--font-main);
             background-color: var(--bg-paper);
             color: var(--primary-ink);
-            overflow-x: hidden;
+            /* نمط الورق المربّع المذكور في الصورة f82ba0072b9768f25474a1a3f7105517.jpg */
             background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
-            background-size: 30px 30px; /* حجم المربعات */
-        }
-
-        /* Lenis Smooth Scroll Setup */
-        html.lenis { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto; }
-        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
-        .lenis.lenis-stopped { overflow: hidden; }
-
-        /* -----------------------------------------------------------
-           2. Reusable Components - عناصر قابلة لإعادة الاستخدام
-        ----------------------------------------------------------- */
-        
-        /* 100% Visual Matching: Polaroid Style */
-        .polaroid {
-            background: var(--polaroid-bg);
-            padding: 15px 15px 40px 15px;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.2);
-            border: 1px solid #ddd;
-            display: inline-block;
-            position: relative;
-            transform: rotate(-2deg); /* تدوير عشوائي مثل الصورة */
-            transition: transform 0.3s var(--ease-cinematic), box-shadow 0.3s ease;
-            cursor: pointer;
-        }
-        .polaroid img {
-            width: 200px;
-            height: 200px;
-            object-fit: cover;
-            filter: grayscale(20%) sepia(20%); /* تأثير عتيق على الصور */
-            border: 1px solid #999;
-        }
-        .polaroid .caption {
-            font-family: var(--font-handwritten);
-            color: var(--primary-ink);
-            font-size: 1.2rem;
-            position: absolute;
-            bottom: 8px;
-            left: 15px;
-            width: calc(100% - 30px);
-            text-align: center;
-        }
-        /* تأثير الدبوس */
-        .polaroid::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 15px;
-            height: 15px;
-            background-color: #333; /* دبوس أسود */
-            border-radius: 50%;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            z-index: 10;
-        }
-
-        /* 100% Visual Matching: Buttons style */
-        .btn-scrap {
-            font-family: var(--font-typewriter);
-            padding: 10px 25px;
-            background: transparent;
-            border: 2px solid var(--primary-ink);
-            color: var(--primary-ink);
-            cursor: pointer;
-            position: relative;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-        }
-        .btn-scrap:hover {
-            background: var(--primary-ink);
-            color: var(--bg-paper);
-            transform: translateY(-3px);
-        }
-
-        /* 100% Visual Matching: Red Thread */
-        .red-thread {
-            position: absolute;
-            border-top: 2px solid var(--accent-red);
-            opacity: 0.7;
-            z-index: 5;
-            pointer-events: none;
-        }
-
-        section {
-            min-height: 100vh;
-            width: 100%;
-            position: relative;
-            padding: 100px 10%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        /* -----------------------------------------------------------
-           3. Navbar - القائمة العلوية
-        ----------------------------------------------------------- */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 20px 5%;
-            background: rgba(230, 225, 214, 0.9); /* شفافية خلفية الورق */
-            backdrop-filter: blur(5px);
-            z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--grid-color);
-        }
-        .nav-logo {
-            font-family: var(--font-heading);
-            font-size: 1.5rem;
-            color: var(--accent-red);
-        }
-        .nav-links { display: flex; gap: 30px; list-style: none; }
-        .nav-links a {
-            text-decoration: none;
-            color: var(--primary-ink);
-            font-family: var(--font-typewriter);
-            font-size: 1rem;
-            position: relative;
-        }
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px; right: 0;
-            width: 0; height: 2px;
-            background-color: var(--accent-red);
-            transition: width 0.3s ease;
-        }
-        .nav-links a:hover::after { width: 100%; }
-
-        /* -----------------------------------------------------------
-           4. Hero Section - محاكاة الصورة الأصلية بدقة
-        ----------------------------------------------------------- */
-        #hero {
-            background-color: var(--bg-paper);
-            padding-top: 150px;
-        }
-
-        /* العنوان الرئيسي الكبير - محاكاة دقيقة للخط والموضع */
-        .hero-title {
-            font-family: var(--font-heading);
-            font-size: 12vw; /* حجم متجاوب */
-            line-height: 0.9;
-            color: #4a3b31; /* لون بني غامق قريباً من الصورة */
-            text-align: center;
-            position: relative;
-            z-index: 10;
-            margin-bottom: 50px;
-        }
-        .hero-title span { display: block; }
-        .title-design { transform: translateX(-5%); }
-        .title-portfolio { transform: translateX(5%); }
-
-        /* تزيينات الهيرو بناءً على الصورة */
-        .hero-decor { position: absolute; pointer-events: none; }
-        
-        /* قصاصات الورق بالأعلى */
-        .decor-piece-top-left {
-            top: 100px; left: 50px; width: 300px; height: 200px;
-            background: #f0ede5; border: 1px solid #ccc;
-            transform: rotate(-5deg); padding: 20px;
-            font-family: var(--font-handwritten); font-size: 1rem; opacity: 0.8;
-        }
-        
-        /* البولارويد المنتشرة - مواضع تقريبية من الصورة */
-        .pola-1 { top: 150px; left: 35%; transform: rotate(-10deg) scale(0.8); }
-        .pola-2 { top: 400px; right: 10%; transform: rotate(15deg) scale(0.9); }
-        .pola-3 { bottom: 100px; left: 15%; transform: rotate(-5deg); }
-        .pola-4 { bottom: 50px; left: 45%; transform: rotate(5deg) scale(1.1); }
-        .pola-5 { bottom: 150px; right: 20%; transform: rotate(10deg) scale(0.8); }
-
-        /* الخيوط الحمراء الواصلة */
-        .thread-1 { top: 300px; left: 38%; width: 45%; transform: rotate(10deg); }
-        .thread-2 { bottom: 250px; left: 20%; width: 25%; transform: rotate(-15deg); }
-
-        /* رسومات يدوية (Placeholders using CSS/SVG simplified) */
-        .ghost-draw { bottom: 200px; left: 35%; color: #55a; font-size: 3rem; font-family: var(--font-handwritten); }
-
-        /* -----------------------------------------------------------
-           5. Other Sections - (About, Services, Contact)
-        ----------------------------------------------------------- */
-        .section-title {
-            font-family: var(--font-heading);
-            font-size: 4rem;
-            color: var(--accent-red);
-            margin-bottom: 40px;
-            position: relative;
-            display: inline-block;
-        }
-        .section-title::after {
-            content: 'CONFIDENTIAL';
-            position: absolute;
-            top: -20px; left: -30px;
-            font-family: var(--font-typewriter);
-            font-size: 1rem; color: rgba(217, 83, 79, 0.5);
-            border: 2px solid; padding: 2px 5px; transform: rotate(-15deg);
-        }
-
-        .content-box {
-            max-width: 800px;
-            background: rgba(255, 255, 255, 0.5);
-            padding: 40px;
-            border: 1px solid var(--grid-color);
-            font-family: var(--font-body);
-            line-height: 1.8;
-        }
-
-        /* -----------------------------------------------------------
-           6. Projects Section & Modal - قسم المشاريع والنافذة
-        ----------------------------------------------------------- */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 40px;
-            padding: 40px 0;
-        }
-
-        /* تأثير Magnetic Button على المشاريع سنطبقه بـ JS */
-        
-        .project-card .polaroid {
-            width: 100%;
-            transform: rotate(0deg); /* تبدأ مستقيمة */
-        }
-        .project-card .polaroid img { width: 100%; height: 250px; }
-
-        /* Modal - نافذة تفاصيل المشروع الكاملة */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 2000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0; visibility: hidden;
-            transition: all 0.5s var(--ease-cinematic);
-            backdrop-filter: blur(10px);
-        }
-        .modal-overlay.active { opacity: 1; visibility: visible; }
-
-        .modal-content {
-            width: 90%; max-width: 1000px; height: 80vh;
-            background: var(--bg-paper);
-            background-image: 
-                linear-gradient(var(--grid-color) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+                linear-gradient(rgba(0,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
             background-size: 30px 30px;
-            border: 10px solid #fff; /* إطار بولارويد عملاق */
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-            overflow-y: auto;
-            padding: 50px;
-            position: relative;
-            transform: scale(0.9) translateY(50px);
-            transition: transform 0.5s var(--ease-cinematic);
-        }
-        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
-
-        .close-modal {
-            position: absolute; top: 20px; left: 20px;
-            font-size: 2rem; color: var(--accent-red); cursor: pointer;
-            font-family: var(--font-typewriter);
         }
 
-        .modal-body-grid {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
-        }
-        @media (max-width: 768px) { .modal-body-grid { grid-template-columns: 1fr; } }
-        
-        .modal-images { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-        .modal-images img { width: 100%; height: 150px; object-fit: cover; border: 2px solid #fff; box-shadow: 2px 2px 5px rgba(0,0,0,0.2); }
-
-        /* -----------------------------------------------------------
-           7. Responsibility & Mobile-First - التجاوب
-        ----------------------------------------------------------- */
-        @media (max-width: 1024px) {
-            .hero-title { font-size: 15vw; }
-            .hero-decor { display: none; } /* إخفاء الديكورات المعقدة على الأجهزة المتوسطة */
+        /* Navbar */
+        nav {
+            position: fixed; top: 0; width: 100%; height: 70px;
+            background: rgba(230, 225, 214, 0.95);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 50px; z-index: 1000; border-bottom: 1px solid #ccc;
         }
 
+        .logo { font-family: var(--font-type); font-weight: bold; color: var(--accent-red); }
+        .nav-links { display: flex; gap: 20px; list-style: none; }
+        .nav-links a { text-decoration: none; color: #333; font-weight: bold; }
+
+        /* Sections */
+        section {
+            min-height: 100vh; padding: 100px 50px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+        }
+
+        /* Hero */
+        .hero-title {
+            font-size: 8vw; font-family: var(--font-type);
+            text-align: center; line-height: 1; margin-bottom: 30px;
+            opacity: 0; transform: translateY(30px);
+        }
+
+        /* Polaroid Simulation */
+        .pola {
+            width: 250px; background: white; padding: 15px 15px 40px 15px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.1);
+            border: 1px solid #ddd; position: absolute;
+            opacity: 0; transform: scale(0.8) rotate(-5deg);
+        }
+        .pola .img-box { width: 100%; height: 200px; background: #eee; border: 1px solid #ccc; }
+        .pola .caption { font-family: var(--font-type); text-align: center; margin-top: 10px; font-size: 0.9rem; }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 30px; border: 2px solid var(--primary-ink);
+            background: transparent; cursor: pointer; font-family: var(--font-type);
+            transition: 0.3s;
+        }
+        .btn:hover { background: var(--primary-ink); color: white; }
+
+        /* Projects Grid */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; width: 100%; max-width: 1200px; margin-top: 50px;
+        }
+
+        /* Modal */
+        #modal {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.8); display:none; z-index: 2000;
+            justify-content:center; align-items:center;
+        }
+        .modal-content {
+            background: var(--bg-paper); padding: 50px; width: 80%; max-width: 700px;
+            position: relative; border: 5px solid white;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .navbar { padding: 15px; }
-            .nav-links { display: none; } /* يمكن إضافة قائمة همبرغر هنا لاحقاً */
-            section { padding: 80px 5%; }
-            .hero-title { font-size: 18vw; padding-top: 100px;}
-            .section-title { font-size: 2.5rem; }
-            .pola-3, .pola-4, .pola-5 { position: relative; bottom: auto; left: auto; right: auto; margin: 20px auto; display: block; width: fit-content;}
+            .nav-links { display: none; }
+            .pola { position: relative; margin-bottom: 20px; opacity: 1; transform: none; top: auto !important; left: auto !important; }
         }
-
-        /* Classes for GSAP Animations */
-        .reveal-text { opacity: 0; transform: translateY(50px); }
-        .reveal-item { opacity: 0; transform: scale(0.9) rotate(-5deg); }
-
     </style>
 </head>
 <body>
 
-    <!-- 1. Smooth Scroll Container (Lenis) -->
-    <div id="scroll-content">
+    <nav>
+        <div class="logo">DESIGN DETECTIVE</div>
+        <ul class="nav-links">
+            <li><a href="#hero">الرئيسية</a></li>
+            <li><a href="#projects">المشاريع</a></li>
+            <li><a href="#contact">اتصل بي</a></li>
+        </ul>
+    </nav>
 
-        <!-- 2. Navbar -->
-        <nav class="navbar">
-            <div class="nav-logo">DESIGN DETECTIVE</div>
-            <ul class="nav-links">
-                <li><a href="#hero">الرئيسية</a></li>
-                <li><a href="#about">عنّي</a></li>
-                <li><a href="#services">المهارات</a></li>
-                <li><a href="#projects">المشاريع</a></li>
-                <li><a href="#contact">اتصل بي</a></li>
-            </ul>
-        </nav>
+    <section id="hero">
+        <h1 class="hero-title" id="mainTitle">Design<br>Portfolio</h1>
+        <p style="font-family: var(--font-type);">أهلاً بك في ملف التحقيقات البصري الخاص بي</p>
+        
+        <!-- بولارويد تحاكي صورة f82ba0072b9768f25474a1a3f7105517.jpg -->
+        <div class="pola" style="top: 20%; left: 10%;">
+            <div class="img-box"></div>
+            <div class="caption">قضية رقم 01</div>
+        </div>
+        <div class="pola" style="bottom: 20%; right: 10%;">
+            <div class="img-box"></div>
+            <div class="caption">الخيط المفقود</div>
+        </div>
+    </section>
 
-        <!-- 3. Hero Section - محاكاة بصرية 100% -->
-        <section id="hero">
-            <!-- ديكورات عتيقة خلفية -->
-            <div class="hero-decor decor-piece-top-left">
-                Are you a wireframe?<br>
-                Because you've got my structure all in place.<br>
-                <span style="font-family: var(--font-typewriter); color: var(--accent-red);">- CONFIDENTIAL -</span>
+    <section id="projects">
+        <h2 style="font-family: var(--font-type); color: var(--accent-red); font-size: 3rem;">المشاريع المحلولة</h2>
+        <div class="grid">
+            <div class="pola" style="position: relative; opacity: 1; transform: none;">
+                <div class="img-box" style="background: #ccc;"></div>
+                <div class="caption">مشروع ألفا</div>
+                <button class="btn" style="width: 100%; margin-top: 10px;" onclick="openModal('ألفا', 'تفاصيل مشروع ألفا السري للغاية...')">التفاصيل</button>
             </div>
-            
-            <!-- الخيوط الحمراء -->
-            <div class="hero-decor red-thread thread-1"></div>
-            <div class="hero-decor red-thread thread-2"></div>
-
-            <!-- صور البولارويد المنثورة - ملاحظة: استخدمت صور PLACEHOLDER -->
-            <div class="hero-decor polaroid pola-1 reveal-item" data-speed="0.1">
-                <img src="https://via.placeholder.com/200x200/ddd/555?text=Case+File+01" alt="Design case">
-                <div class="caption">A Guide for below</div>
+            <div class="pola" style="position: relative; opacity: 1; transform: none;">
+                <div class="img-box" style="background: #bbb;"></div>
+                <div class="caption">مشروع بيتا</div>
+                <button class="btn" style="width: 100%; margin-top: 10px;" onclick="openModal('بيتا', 'هذا المشروع تم إنجازه في ظروف غامضة.')">التفاصيل</button>
             </div>
-            <div class="hero-decor polaroid pola-2 reveal-item" data-speed="-0.1">
-                <img src="https://via.placeholder.com/200x200/ddd/555?text=Evidence" alt="Design case">
-                <div class="caption">Lets Plan</div>
-            </div>
+        </div>
+    </section>
 
-            <!-- العنوان الرئيسي (GSAP split text animation will target this) -->
-            <h1 class="hero-title">
-                <span class="title-design reveal-text">Design</span>
-                <span class="title-portfolio reveal-text">Portfolio</span>
-            </h1>
-
-            <!-- صور البولارويد السفلية -->
-            <div class="hero-decor polaroid pola-3 reveal-item" data-speed="0.2">
-                <img src="https://via.placeholder.com/200x200/333/fff?text=Artist" alt="Design case">
-                <div class="caption">Artist</div>
-            </div>
-            <div class="hero-decor polaroid pola-4 reveal-item" data-speed="-0.15">
-                <img src="https://via.placeholder.com/200x200/ddd/555?text=Detective" alt="Design case">
-                <div class="caption">Detective Designer</div>
-                <!-- الختم الأحمر المستدير في الصورة -->
-                <div style="position: absolute; top: 10px; right: 10px; border: 3px solid var(--accent-red); color: var(--accent-red); font-family: var(--font-typewriter); padding: 5px; transform: rotate(15deg); border-radius: 50%; font-size: 0.7rem;">REJECTED</div>
-            </div>
-            
-            <div class="hero-decor ghost-draw">👻</div>
-
-        </section>
-
-        <!-- 4. About Section -->
-        <section id="about">
-            <h2 class="section-title reveal-text">ملف المحقق البصري</h2>
-            <div class="content-box reveal-item">
-                <p class="font-typewriter">شخصية غامضة تعمل في ظلال البكسل...</p>
-                <p>أنا مصمم واجهات أمامية بشغف لحل ألغاز التصميم. مثل المحقق، أبحث عن التفاصيل الصغيرة التي تصنع الفارق في تجربة المستخدم. أحول الأفكار المبهمة إلى واجهات واضحة، جذابة، وتفاعلية سينمائية باستخدام أحدث التقنيات مثل GSAP.</p>
-                <br>
-                <a href="#" class="btn-scrap">تحميل السيرة الذاتية (ملف سري)</a>
-            </div>
-        </section>
-
-        <!-- 5. Services/Skills Section -->
-        <section id="services">
-            <h2 class="section-title reveal-text">أدوات الجريمة (المهارات)</h2>
-            <div class="projects-grid">
-                <!-- Skill Card 1 -->
-                <div class="polaroid reveal-item" style="transform: rotate(3deg);">
-                    <img src="https://via.placeholder.com/200x200/ffeeee/333?text=GSAP" alt="Skill">
-                    <div class="caption">التحريك السينمائي</div>
-                </div>
-                <!-- Skill Card 2 -->
-                <div class="polaroid reveal-item" style="transform: rotate(-2deg);">
-                    <img src="https://via.placeholder.com/200x200/eeeeff/333?text=React" alt="Skill">
-                    <div class="caption">بناء الهياكل</div>
-                </div>
-                <!-- Skill Card 3 -->
-                <div class="polaroid reveal-item" style="transform: rotate(5deg);">
-                    <img src="https://via.placeholder.com/200x200/eeffee/333?text=UI/UX" alt="Skill">
-                    <div class="caption">تحليل الآثار</div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. Projects Section -->
-        <section id="projects">
-            <h2 class="section-title reveal-text">القضايا المحلولة (المشاريع)</h2>
-            <div class="projects-grid">
-                
-                <!-- Project 1 -->
-                <div class="project-card reveal-item" data-project="1">
-                    <div class="polaroid magnetic-item">
-                        <img src="https://via.placeholder.com/300x250/333/fff?text=Project+Alpha" alt="Project">
-                        <div class="caption">قضية ألفا: تجربة مستخدم ثورية</div>
-                        <button class="btn-scrap view-details" style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.8rem;">التفاصيل</button>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="project-card reveal-item" data-project="2">
-                    <div class="polaroid magnetic-item">
-                        <img src="https://via.placeholder.com/300x250/555/fff?text=Project+Beta" alt="Project">
-                        <div class="caption">قضية بيتا: موقع تجارة إلكترونية</div>
-                        <button class="btn-scrap view-details" style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.8rem;">التفاصيل</button>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="project-card reveal-item" data-project="3">
-                    <div class="polaroid magnetic-item">
-                        <img src="https://via.placeholder.com/300x250/777/fff?text=Project+Gamma" alt="Project">
-                        <div class="caption">قضية غاما: تطبيق تحريك متطور</div>
-                        <button class="btn-scrap view-details" style="position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 0.8rem;">التفاصيل</button>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- 7. Contact Section -->
-        <section id="contact">
-            <h2 class="section-title reveal-text">إرسال إخبارية (اتصل بنا)</h2>
-            <div class="content-box reveal-item" style="font-family: var(--font-typewriter); text-align: center;">
-                <p>هل لديك قضية تصميم معقدة؟</p>
-                <p>اترك رسالة مشفرة هنا...</p>
-                <br>
-                <p style="font-size: 1.5rem; color: var(--accent-red);">detective@design.com</p>
-                <br>
-                <div class="pola-5 polaroid" style="position: relative; transform: rotate(10deg); cursor: default;">
-                   <img src="https://via.placeholder.com/150x150/f0f0f0/333?text=Scan+QR" alt="QR Code">
-                </div>
-            </div>
-        </section>
-
-    </div> <!-- End Scroll Content -->
-
-    <!-- 8. Project Details Modal -->
-    <div class="modal-overlay" id="projectModal">
-        <div class="modal-content">
-            <div class="close-modal">X</div>
-            <h2 class="section-title" id="modalTitle" style="font-size: 2.5rem;">اسم المشروع</h2>
-            
-            <div class="modal-body-grid">
-                <div class="modal-info">
-                    <p class="font-typewriter" style="color: var(--accent-red);">الحالة: محلولة</p>
-                    <br>
-                    <p id="modalDescription">تفاصيل المشروع العميقة تظهر هنا. تحليل، استراتيجية، وتنفيذ.</p>
-                    <br>
-                    <a href="#" class="btn-scrap">زيارة الموقع الحتّي</a>
-                </div>
-                <div class="modal-images">
-                    <img src="https://via.placeholder.com/300x200/ddd/555?text=Screenshot+1" alt="work">
-                    <img src="https://via.placeholder.com/300x200/ddd/555?text=Screenshot+2" alt="work">
-                    <img src="https://via.placeholder.com/300x200/ddd/555?text=Screenshot+3" alt="work">
-                    <img src="https://via.placeholder.com/300x200/ddd/555?text=Screenshot+4" alt="work">
-                </div>
-            </div>
+    <div id="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <h2 id="mTitle" style="font-family: var(--font-type);"></h2>
+            <p id="mDesc" style="margin: 20px 0;"></p>
+            <button class="btn" onclick="closeModal()">إغلاق الملف</button>
         </div>
     </div>
 
-    <!-- -----------------------------------------------------------
-         9. SCRIPTS - GSAP, Lenis, Custom Logic
-    ----------------------------------------------------------- -->
+    <!-- GSAP لمجرد التأكد من التحريك -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     
-    <!-- GSAP core & ScrollTrigger -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-    
-    <!-- Lenis for Smooth Scrolling -->
-    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.19/bundled/lenis.min.js"></script>
-
     <script>
-        // بيانات وهمية للمشاريع (لمثال الـ Modal)
-        const projectsData = {
-            "1": { title: "قضية ألفا", desc: "استخدمنا تحريكات GSAP المتقدمة لخلق سريالية بصرية تزيد التفاعل بنسبة 200%. تم تحليل سلوك المستخدم بدقة كأنها بصمات أصابع." },
-            "2": { title: "قضية بيتا", desc: "بناء متجر إلكتروني سريع جداً باستخدام Next.js. الهيكل البصري مستوحى من الصحف القديمة مع لمسة عصرية." },
-            "3": { title: "قضية غاما", desc: "تطبيق لوحة تحكم تعرض البيانات كقصاصات وخرائط أدلة. فكرة غير تقليدية لإدارة البيانات المعقدة." }
+        window.onload = () => {
+            // تحريك العنوان
+            gsap.to("#mainTitle", { opacity: 1, y: 0, duration: 1, ease: "power2.out" });
+            
+            // تحريك البولارويد
+            gsap.to(".pola", { 
+                opacity: 1, 
+                scale: 1, 
+                duration: 1, 
+                stagger: 0.2, 
+                delay: 0.5,
+                ease: "back.out(1.7)" 
+            });
         };
 
-        document.addEventListener("DOMContentLoaded", function() {
-            
-            // --- أ. تهيئة التمرير السلس (Lenis) ---
-            const lenis = new Lenis();
-            lenis.on('scroll', ScrollTrigger.update);
-            gsap.ticker.add((time)=>{ lenis.raf(time * 1000) });
-            gsap.ticker.lagSmoothing(0);
+        function openModal(title, desc) {
+            document.getElementById('mTitle').innerText = title;
+            document.getElementById('mDesc').innerText = desc;
+            document.getElementById('modal').style.display = 'flex';
+        }
 
-            // --- ب. أنيميشن التحميل الأول (Hero Section) ---
-            // تأثير Text Reveal على العنوان (حرف بحرف أو كلمة بكلمة)
-            gsap.to(".hero-title .reveal-text", {
-                opacity: 1,
-                y: 0,
-                duration: 1.5,
-                stagger: 0.3,
-                ease: "power4.out",
-                delay: 0.5
-            });
-
-            // ظهور البولارويد في الهيرو مع دوران خفيف
-            gsap.to("#hero .reveal-item", {
-                opacity: 1,
-                scale: 1,
-                rotation: (i, target) => window.getComputedStyle(target).getPropertyValue('transform'), // الحفاظ على الدوران الأصلي
-                duration: 1,
-                stagger: 0.2,
-                ease: "back.out(1.7)",
-                delay: 1
-            });
-
-            // --- ج. Scroll-Triggered Animations (سينمائي) ---
-            
-            // 1. تأثير Parallax على عناصر الهيرو أثناء التمرير
-            gsap.utils.toArray("#hero .hero-decor").forEach(item => {
-                const speed = item.dataset.speed || 0.1;
-                gsap.to(item, {
-                    yPercent: speed * 100,
-                    ease: "none",
-                    scrollTrigger: {
-                        trigger: "#hero",
-                        start: "top top",
-                        end: "bottom top",
-                        scrub: true
-                    }
-                });
-            });
-
-            // 2. ظهور العناوين (Reveal) في الأقسام الأخرى عند الوصول إليها
-            gsap.utils.toArray(".section-title.reveal-text").forEach(title => {
-                gsap.to(title, {
-                    opacity: 1,
-                    y: 0,
-                    duration: 1,
-                    scrollTrigger: {
-                        trigger: title,
-                        start: "top 80%", // يبدأ عندما يكون العنوان في 80% من الشاشة
-                        toggleActions: "play none none none" // يلعب مرة واحدة
-                    }
-                });
-            });
-
-            // 3. ظهور البطاقات والمحتوى (Reveal) بطريقة متتالية
-            gsap.utils.toArray("section").forEach(section => {
-                const items = section.querySelectorAll(".reveal-item");
-                if(items.length > 0) {
-                    gsap.to(items, {
-                        opacity: 1,
-                        scale: 1,
-                        y: 0,
-                        duration: 0.8,
-                        stagger: 0.2,
-                        ease: "power2.out",
-                        scrollTrigger: {
-                            trigger: section,
-                            start: "top 60%",
-                        }
-                    });
-                }
-            });
-
-            // --- د. تأثيرات Hover المتطورة (Magnetic & Parallax) ---
-            
-            // تأثير Parallax خفيف على صور البولارويد عند تحريك الماوس فوقها
-            const polaroids = gsap.utils.toArray('.polaroid');
-            polaroids.forEach(pola => {
-                pola.addEventListener('mousemove', (e) => {
-                    const rect = pola.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width/2;
-                    const y = e.clientY - rect.top - rect.height/2;
-                    gsap.to(pola, {
-                        x: x * 0.1, // تحرك خفيف جداً
-                        y: y * 0.1,
-                        rotationX: -y * 0.05, // دوران ثلاثي الأبعاد خفيف
-                        rotationY: x * 0.05,
-                        transformPerspective: 1000,
-                        ease: "power2.out",
-                        duration: 0.3
-                    });
-                });
-                pola.addEventListener('mouseleave', () => {
-                    gsap.to(pola, { x: 0, y: 0, rotationX: 0, rotationY: 0, ease: "power2.out", duration: 0.5 });
-                });
-            });
-
-            // تأثير Magnetic Button لزر "تفاصيل" داخل بطاقة المشروع
-            const projectCards = gsap.utils.toArray('.project-card');
-            projectCards.forEach(card => {
-                const btn = card.querySelector('.view-details');
-                card.addEventListener('mousemove', (e) => {
-                    const rect = card.getBoundingClientRect();
-                    const x = e.clientX - rect.left - rect.width/2;
-                    const y = e.clientY - rect.top - rect.height/2;
-                    // الزر ينجذب بقوة أكبر
-                    gsap.to(btn, { x: x * 0.3, y: y * 0.3, ease: "power2.out", duration: 0.3 });
-                    // البطاقة تميل قليلاً
-                    gsap.to(card.querySelector('.polaroid'), { rotation: x*0.02, ease: "power2.out", duration: 0.3 });
-                });
-                card.addEventListener('mouseleave', () => {
-                    gsap.to(btn, { x: 0, y: 0, ease: "power2.out", duration: 0.5 });
-                    gsap.to(card.querySelector('.polaroid'), { rotation: 0, ease: "power2.out", duration: 0.5 });
-                });
-            });
-
-            // --- هـ. وظائف الـ Modal (نافذة المشاريع) ---
-            const modal = document.getElementById('projectModal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalDesc = document.getElementById('modalDescription');
-            const closeBtn = document.querySelector('.close-modal');
-
-            document.querySelectorAll('.view-details').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const projectId = e.target.closest('.project-card').dataset.project;
-                    const data = projectsData[projectId];
-
-                    if(data) {
-                        modalTitle.innerText = data.title;
-                        modalDesc.innerText = data.desc;
-                        modal.classList.add('active');
-                        lenis.stop(); // إيقاف التمرير في الخلفية
-                    }
-                });
-            });
-
-            const closeModal = () => {
-                modal.classList.remove('active');
-                lenis.start(); // إعادة تفعيل التمرير
-            };
-
-            closeBtn.addEventListener('click', closeModal);
-            modal.addEventListener('click', (e) => {
-                if(e.target === modal) closeModal(); // إغلاق عند الضغط خارج المحتوى
-            });
-            document.addEventListener('keydown', (e) => {
-                if(e.key === "Escape" && modal.classList.contains('active')) closeModal();
-            });
-
-
-            // --- و. Smooth Scrolling للروابط الداخلية (Navbar) ---
-            document.querySelectorAll('.nav-links a').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    lenis.scrollTo(targetId, { offset: -80 }); // الانتقال مع إزاحة لارتفاع الـ Navbar
-                });
-            });
-
-        });
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
     </script>
 </body>
 </html>
